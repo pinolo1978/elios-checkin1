@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Check-in Elios</title>
+<style>
+body {
+    font-family:Arial;
+    background:#eef3f8;
+    text-align:center;
+    padding-top:80px;
+}
+.card {
+    background:white;
+    display:inline-block;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+input {
+    display:block;
+    margin:10px auto;
+    padding:12px;
+    width:250px;
+}
+button {
+    padding:12px 25px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2>Check-in Elios</h2>
+
+<input id="nome" placeholder="Nome">
+<input id="cognome" placeholder="Cognome">
+<input id="from" placeholder="Partenza">
+<input id="to" placeholder="Arrivo">
+<input id="date" type="date">
+
+<button onclick="go()">Continua</button>
+</div>
+
+<script>
+function go(){
+let n=nome.value,c=cognome.value,f=from.value,t=to.value,d=date.value;
+window.location.href=`ticket.html?nome=${n}&cognome=${c}&from=${f}&to=${t}&date=${d}`;
+}
+</script>
+
+</body>
+</html>
