@@ -9,27 +9,26 @@
 body {
     font-family: Arial;
     background: #0b1220;
+    color: white;
     text-align: center;
 }
 
-/* BIGLIETTO */
 .ticket {
     margin: 50px auto;
-    width: 820px;
+    width: 800px;
     background: white;
+    color: black;
     border-radius: 25px;
-    display: flex;
     overflow: hidden;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    display: flex;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
-/* LEFT */
 .left {
     width: 70%;
     padding: 30px;
 }
 
-/* RIGHT */
 .right {
     width: 30%;
     background: #f1f5f9;
@@ -37,34 +36,41 @@ body {
     border-left: 2px dashed #ccc;
 }
 
-/* HEADER */
 .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-/* ROUTE */
+.brand {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo {
+    width:45px;
+}
+
 .route {
-    font-size: 55px;
+    font-size: 52px;
     font-weight: bold;
     margin: 20px 0;
 }
 
-/* GRID */
 .grid {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
 
 .label {
-    font-size: 11px;
+    font-size: 12px;
     color: gray;
 }
 
 .value {
     font-weight: bold;
-    font-size: 16px;
 }
 
 .footer {
@@ -83,12 +89,19 @@ body {
 <div class="left">
 
 <div class="header">
-<div><b>ELIOS AIRLINES</b></div>
+
+<div class="brand">
+<img class="logo" src="https://i.imgur.com/GJ8dddG.png">
+<div style="font-weight:600;letter-spacing:1px;">
+ELIOS AIRLINES
+</div>
+</div>
+
 <div id="pnr"></div>
+
 </div>
 
 <div id="name"></div>
-
 <div class="route" id="route"></div>
 
 <div class="grid">
@@ -97,19 +110,16 @@ body {
 <div><div class="label">FLIGHT</div><div class="value">EL<span id="flight"></span></div></div>
 <div><div class="label">CLASS</div><div class="value">ECONOMY</div></div>
 
-<div><div class="label">DEPARTURE</div><div class="value" id="departure"></div></div>
-<div><div class="label">BOARDING</div><div class="value" id="boarding"></div></div>
 <div><div class="label">GATE</div><div class="value" id="gate"></div></div>
-
 <div><div class="label">TERMINAL</div><div class="value" id="terminal"></div></div>
+<div><div class="label">BOARDING</div><div class="value" id="boarding"></div></div>
+
 <div><div class="label">SEAT</div><div class="value" id="seat"></div></div>
 <div><div class="label">GROUP</div><div class="value">B</div></div>
 
 </div>
 
-<div class="footer">
-Elios Airlines Boarding Pass
-</div>
+<div class="footer">Elios Airlines Boarding Pass</div>
 
 </div>
 
@@ -120,55 +130,26 @@ Elios Airlines Boarding Pass
 </div>
 
 <script>
-
 function rand(min,max){return Math.floor(Math.random()*(max-min)+min);}
 function pnr(){return Math.random().toString(36).substring(2,8).toUpperCase();}
 function seat(){let l=["A","B","C","D","E","F"];return rand(1,30)+l[rand(0,6)];}
 
-// DATI
 const p=new URLSearchParams(window.location.search);
 
-let nome=p.get("nome") || "";
-let cognome=p.get("cognome") || "";
-let from=p.get("from") || "";
-let to=p.get("to") || "";
-let date=p.get("date") || "";
+let n=p.get("nome"),c=p.get("cognome"),f=p.get("from"),t=p.get("to"),d=p.get("date");
 
-// FORMATO NOME AIRLINE
-let fullName=(cognome+"/"+nome).toUpperCase();
+document.getElementById("name").innerText=(c+"/"+n).toUpperCase();
+document.getElementById("route").innerText=f.substring(0,3).toUpperCase()+" → "+t.substring(0,3).toUpperCase();
+document.getElementById("date_out").innerText=d;
 
-// ORARI REALISTICI
-let depHour=rand(6,22);
-let depMin=rand(0,59);
-let boardingMin=depMin-30;
-if(boardingMin<0){boardingMin+=60; depHour--;}
-
-let departure=depHour+":"+String(depMin).padStart(2,"0");
-let boarding=depHour+":"+String(boardingMin).padStart(2,"0");
-
-// OUTPUT
-document.getElementById("name").innerText=fullName;
-document.getElementById("route").innerText=
-from.substring(0,3).toUpperCase()+" → "+to.substring(0,3).toUpperCase();
-
-document.getElementById("date_out").innerText=date;
 document.getElementById("pnr").innerText="PNR: "+pnr();
-
 document.getElementById("gate").innerText="A"+rand(1,30);
 document.getElementById("terminal").innerText=rand(1,3);
 document.getElementById("seat").innerText=seat();
 document.getElementById("flight").innerText=rand(100,999);
+document.getElementById("boarding").innerText=rand(10,23)+":"+String(rand(0,59)).padStart(2,"0");
 
-document.getElementById("departure").innerText=departure;
-document.getElementById("boarding").innerText=boarding;
-
-// QR
-new QRCode(document.getElementById("qr"),{
-text:fullName+" "+departure,
-width:170,
-height:170
-});
-
+new QRCode(document.getElementById("qr"),{text:n+" "+c,width:160,height:160});
 </script>
 
 </body>
